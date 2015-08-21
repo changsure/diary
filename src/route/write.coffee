@@ -1,5 +1,5 @@
 dateFormat = require('dateformat')
-
+_ = require('underscore')
 config = require('../config')
 exchangeService = require('../service/exchange_service')
 WriteVue = require('./../vue/write_vue')

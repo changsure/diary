@@ -7,23 +7,22 @@ myutils = require('./../util/myutils')
 encryptUtil = require('./../util/encrypt_util')
 config = require('./../config')
 
-
-
 WriteVue = Vue.extend({
   template: require('../template/read.html')
   ready:()->
+    if(!this.$data.passCheck? || this.$data.passCheck == '')
+      $("#diary_content_html").html(this.$data.content?.replace(/\n/g,'<br>'))
     this.initDiary()
     this.queryArroundMonthDiary(new Date(),()=>
       this.bindDatePicker()
     )
-
 
   methods:
     openLockedDiary: ()->
       if(this.$data.passCheck != encryptUtil.sha1Hash(this.$data.pass))
         alert('Not Right')
       else
-        this.$data.content = encryptUtil.aesDecrypt(this.$data.content, this.$data.pass)
+        this.$data.content = encryptUtil.diaryDecrypt(this.$data.content, this.$data.pass)
         $('#lock_modal').modal('hide')
 
         $("#diary_content").removeClass('hidden')
@@ -32,6 +31,8 @@ WriteVue = Vue.extend({
         $("#do_open_locked_diary").addClass('hidden')
         $("#icon_openlock").addClass('hidden')
         $("#icon_locked").removeClass('hidden')
+
+        $("#diary_content_html").html(this.$data.content?.replace(/\n/g,'<br>'))
 
     bindDatePicker:()->
       $('.fa-calendar').datepicker(

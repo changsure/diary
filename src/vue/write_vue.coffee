@@ -1,4 +1,5 @@
 Vue = require('vue')
+_ = require('underscore')
 exchangeService = require('./../service/exchange_service')
 myutils = require('./../util/myutils')
 encryptUtil = require('./../util/encrypt_util')
@@ -17,17 +18,17 @@ WriteVue = Vue.extend(
 
     # bind enter to pass
     $("#modal_pass_input").keydown((e)=>
-      key = e.which
-      if(key == 13)
+      if(e.which == 13 || e.keyCode == 13)
         if($("#do_open_locked_diary:visible").size()>0)
           this.openLockedDiary()
     )
 
     # bind ctrl command s to save
     $("#diary_content").keydown((e)=>
-      if((event.ctrlKey || event.metaKey) && event.which == 83)
+
+      if((e.ctrlKey || e.metaKey) && (e.which == 83 || e.keyCode == 83))
         this.save()
-        event.preventDefault();
+        e.preventDefault();
         return false;
     )
 
@@ -47,6 +48,7 @@ WriteVue = Vue.extend(
       $("#do_open_locked_diary").removeClass('hidden')
 
     else
+      this.$data.content = _.unescape(this.$data.content)
       $("#diary_content").removeClass('hidden')
       $("#diary_content_locked").addClass('hidden')
 
@@ -68,20 +70,21 @@ WriteVue = Vue.extend(
 
   methods:
     save: ()->
+
       if(!this.$data.content? || this.$data.content == '' || this.$data.content == this.$data.savedContent)
         return
-      if(!this.$data.pass? && this.$data.passCheck?)
+      if((!this.$data.pass? || this.$data.pass=='') && (this.$data.passCheck? && this.$data.passCheck!=''))
         return
 
       if(this.$data.passCheck? && this.$data.passCheck != '')
         diary =
           date: this.$data.date
-          content: encryptUtil.aesEncrypt(this.$data.content, this.$data.pass)
+          content: encryptUtil.diaryEncrypt(_.escape(this.$data.content), this.$data.pass)
           passCheck: this.$data.passCheck
       else
         diary =
           date: this.$data.date
-          content: this.$data.content
+          content: _.escape(this.$data.content)
           passCheck: null
 
       if(this.$data._id?)
@@ -111,12 +114,13 @@ WriteVue = Vue.extend(
       $("#icon_locked").removeClass('hidden')
       $("#icon_unlocked").addClass('hidden')
       $("#diary_content textarea").focus()
+      this.save()
 
     openLockedDiary: ()->
       if(this.$data.passCheck != encryptUtil.sha1Hash(this.$data.pass))
         alert('Not Right')
       else
-        this.$data.content = encryptUtil.aesDecrypt(this.$data.content, this.$data.pass)
+        this.$data.content = _.unescape(encryptUtil.diaryDecrypt(this.$data.content, this.$data.pass))
         $('#lock_modal').modal('hide')
 
         $("#diary_content").removeClass('hidden')

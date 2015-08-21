@@ -18,6 +18,10 @@ config = require('./../config');
 WriteVue = Vue.extend({
   template: require('../template/read.html'),
   ready: function() {
+    var ref;
+    if ((this.$data.passCheck == null) || this.$data.passCheck === '') {
+      $("#diary_content_html").html((ref = this.$data.content) != null ? ref.replace(/\n/g, '<br>') : void 0);
+    }
     this.initDiary();
     return this.queryArroundMonthDiary(new Date(), (function(_this) {
       return function() {
@@ -27,16 +31,18 @@ WriteVue = Vue.extend({
   },
   methods: {
     openLockedDiary: function() {
+      var ref;
       if (this.$data.passCheck !== encryptUtil.sha1Hash(this.$data.pass)) {
         return alert('Not Right');
       } else {
-        this.$data.content = encryptUtil.aesDecrypt(this.$data.content, this.$data.pass);
+        this.$data.content = encryptUtil.diaryDecrypt(this.$data.content, this.$data.pass);
         $('#lock_modal').modal('hide');
         $("#diary_content").removeClass('hidden');
         $("#diary_content_locked").addClass('hidden');
         $("#do_open_locked_diary").addClass('hidden');
         $("#icon_openlock").addClass('hidden');
-        return $("#icon_locked").removeClass('hidden');
+        $("#icon_locked").removeClass('hidden');
+        return $("#diary_content_html").html((ref = this.$data.content) != null ? ref.replace(/\n/g, '<br>') : void 0);
       }
     },
     bindDatePicker: function() {
