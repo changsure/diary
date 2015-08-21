@@ -21,8 +21,6 @@ WriteVue = Vue.extend(
       if(key == 13)
         if($("#do_open_locked_diary:visible").size()>0)
           this.openLockedDiary()
-        else if($("#do_lock_diary:visible").size()>0)
-          this.lockDiary()
     )
 
     # bind ctrl command s to save

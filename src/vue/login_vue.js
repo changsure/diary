@@ -17,9 +17,21 @@ encryptUtil = require('./../util/encrypt_util');
 
 LoginVue = Vue.extend({
   template: require('../template/login.html'),
+  ready: function() {
+    return $("#input_password").keydown((function(_this) {
+      return function(e) {
+        var key;
+        key = e.which;
+        if (key === 13) {
+          return _this.signIn();
+        }
+      };
+    })(this));
+  },
   methods: {
     signIn: function() {
       var user;
+      $("#icon_doing").removeClass("hidden");
       user = {
         email: this.$data.email,
         accountName: this.$data.email,
@@ -28,6 +40,7 @@ LoginVue = Vue.extend({
         remember: true
       };
       return exchangeService.loginAccount(user, function(err, endToken) {
+        $("#icon_doing").addClass("hidden");
         if ((err != null)) {
           return alert(err.errorMessage);
         } else {

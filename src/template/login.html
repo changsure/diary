@@ -6,16 +6,17 @@
         <a href="#/signup"><i class="fa fa-user-plus fa-2x" style="color: #fcfcff;margin-right: 10px;cursor: pointer; cursor: hand;"></i></a>
     </div>
 </header>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<main>
+
+<main style="height: 600px;">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <div class="container">
         <form>
             <div class="row">
@@ -24,7 +25,7 @@
                         <input autofocus="true" style="background-color:transparent;color:#B5B5B8;" type="email" class="form-control" placeholder="test@somewhere.com" v-model="email">
                     </div>
                     <div class="form-group">
-                        <input style="background-color:transparent;color:#B5B5B8;" type="password" class="form-control" placeholder="*******" v-model="password">
+                        <input id="input_password" style="background-color:transparent;color:#B5B5B8;" type="password" class="form-control" placeholder="*******" v-model="password">
                     </div>
                 </div>
                 <div class="col-md-1 col-sm-2 col-xs-2">
@@ -36,4 +37,9 @@
     </div>
 </main>
 <footer>
+    <div class="container-fluid" style="margin-top: 10px;vertical-align: bottom;">
+        <div class=" col-xs-offset-6 col-xs-6" style="padding-top:5px;text-align: right;">
+            <i id="icon_doing" class="fa fa-spinner fa-pulse fa-1x hidden" style="color: #fcfcff" ></i>
+        </div>
+    </div>
 </footer>

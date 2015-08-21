@@ -11,10 +11,12 @@ SignUpVue = Vue.extend({
   template: require('../template/signup.html')
   methods:
     signUp:()->
+
       if(this.$data.password != this.$data.passwordRepeat)
         alert('Two password not match!')
         return
 
+      $("#icon_doing").removeClass("hidden")
       user =
         email: this.$data.email
         accountName:this.$data.email
@@ -22,6 +24,7 @@ SignUpVue = Vue.extend({
         password: encryptUtil.sha1Hash(this.$data.password)
         remember: true
       exchangeService.registerAccount(user,(err)->
+        $("#icon_doing").addClass("hidden")
         if(err?)
           alert(err.errorMessage)
         else

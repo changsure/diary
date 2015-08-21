@@ -27,8 +27,6 @@ WriteVue = Vue.extend({
         if (key === 13) {
           if ($("#do_open_locked_diary:visible").size() > 0) {
             return _this.openLockedDiary();
-          } else if ($("#do_lock_diary:visible").size() > 0) {
-            return _this.lockDiary();
           }
         }
       };

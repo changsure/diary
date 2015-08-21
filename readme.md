@@ -1,5 +1,5 @@
 
-#Ocean Sample Blog App
+#Lone Time - Diary
 This front app is powered by oceanclouds.com.
 
 Using tech list director, vue, npm, bower, watchify, partialify. 
@@ -9,3 +9,6 @@ Using tech list director, vue, npm, bower, watchify, partialify.
 > npm install
 > bower install
 > npm run dev
+
+Can uglify by using 
+> npm run uglify

@@ -24,6 +24,7 @@ SignUpVue = Vue.extend({
         alert('Two password not match!');
         return;
       }
+      $("#icon_doing").removeClass("hidden");
       user = {
         email: this.$data.email,
         accountName: this.$data.email,
@@ -32,6 +33,7 @@ SignUpVue = Vue.extend({
         remember: true
       };
       return exchangeService.registerAccount(user, function(err) {
+        $("#icon_doing").addClass("hidden");
         if ((err != null)) {
           return alert(err.errorMessage);
         } else {
