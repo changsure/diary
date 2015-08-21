@@ -1,0 +1,5 @@
+blog
+{
+    title:{type:String},
+    content:{type:String}
+}

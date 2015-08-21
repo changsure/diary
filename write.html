@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lone Time - Diary</title>
+    <meta name="keywords" content="Diary, lone time, 日记，独自时光"/>
+    <meta name="description" content="Lone Time - Diary is a diary online, it's simple to write a diary. 独自时光 - 日记， 一款简单的在线日记应用。"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"/>
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <style type="text/css">
+    </style>
+</head>
+<body style="background-color:#232323; ">
+<form>
+    <header style="color:#b5b5b8;">
+        <div class="container-fluid" style="margin-top: 10px;vertical-align: bottom;">
+            <div class="col-xs-6">
+                <h3 class="">2015-08-10 <i class="fa fa-calendar"></i></h3>
+            </div>
+            <div class="col-xs-6" style="padding-top: 22px;text-align: right">
+                <i class="fa fa-reply fa-2x" style="color: #fcfcff;margin-right: 10px;"></i>
+                <i class="fa fa-key fa-2x" style="color: #fcfcff" data-toggle="modal" data-target="#myModal"></i>
+                <i class="fa fa-lock fa-2x" style="color: #fcfcff"></i>
+                <i class="fa fa-lock fa-2x" style="color: #5b5b5d" data-toggle="modal" data-target="#myModal"></i>
+            </div>
+        </div>
+    </header>
+    <main style="margin-top:10px;">
+        <div class="container-fluid">
+            <textarea autofocus="true" class="form-control" rows="24" style="background-color:transparent;color:#B5B5B8;border: 0;font-size: 16px;"></textarea>
+        </div>
+    </main>
+    <footer>
+        <div class="container-fluid" style="margin-top: 10px;vertical-align: bottom;">
+            <div class="col-xs-6">
+                <i class="fa fa-save fa-2x" style="color: #fcfcff"></i>
+            </div>
+            <div class="col-xs-6" style="padding-top:5px;text-align: right;">
+                <i class="fa fa-spinner fa-pulse fa-1x" style="color: #fcfcff"></i>
+            </div>
+        </div>
+    </footer>
+</form>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div style="background-color:#2b2b2d;color:#B5B5B8;border: 0;font-size: 16px;" class="modal-content">
+            <div class="modal-body">
+                <div class="input-group">
+                    <input style="background-color:transparent;color:#B5B5B8;" class="form-control" type="text" placeholder="******">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="fa fa-key fa-fw"></i><i class="fa fa-lock"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script>
+    $(document).ready(function () {
+                $('.fa-calendar').datepicker({
+                    autoclose: true,
+                    beforeShowDay:function(date){
+                        if(date.getFullYear()===2015 && date.getMonth() ===7 ){
+                            if(date.getDay()%2 === 0){
+                                return true;
+                            }else{
+                                return false;
+                            }
+
+                        }else{
+                            return false;
+                        }
+                    }
+                }).on('hide',function(e){
+                    console.log(e.date);
+                });
+            }
+    )
+
+</script>
+</body>
+</html>

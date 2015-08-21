@@ -1,0 +1,47 @@
+<form>
+    <header style="color:#b5b5b8;">
+        <div class="container-fluid" style="margin-top: 10px;vertical-align: bottom;">
+            <div class="col-xs-6">
+                <h3 class="">{{date}} <i class="fa fa-calendar"></i></h3>
+            </div>
+            <div class="col-xs-6" style="padding-top: 22px;text-align: right">
+                <a href="#/main"><i class="fa fa-reply fa-2x" style="color: #fcfcff;margin-right: 20px;"></i></a>
+                <i id="icon_openlock" class="fa fa-key fa-2x hidden" style="color: #fcfcff;cursor: pointer; cursor: hand;margin-right: 10px;" data-toggle="modal" data-target="#lock_modal"></i>
+            </div>
+        </div>
+    </header>
+    <main style="margin-top:10px;">
+        <div id="diary_content" class="container-fluid" style="min-height: 500px">
+            <div style="background-color:transparent;color:#B5B5B8;border: 0;font-size: 16px;">{{content}}</div>
+        </div>
+        <div id="diary_content_locked" class="container-fluid text-center hidden">
+            <i class="fa fa-lock fa-5x" style="margin-top: 200px;margin-bottom: 300px;"></i>
+        </div>
+    </main>
+    <footer>
+        <div class="container-fluid" style="margin-top: 10px;vertical-align: bottom;">
+            <div class="col-xs-6">
+            </div>
+            <div class="col-xs-6" style="padding-top:5px;text-align: right;">
+                <i id="icon_locked" class="fa fa-lock hidden" style="color: #fcfcff; margin-right: 10px;"></i>
+                <i class="fa fa-save" style="color: #fcfcff; margin-right: 10px;"> {{updateTime | datetime HH:MM:ss}} </i>
+            </div>
+        </div>
+    </footer>
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="lock_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div style="background-color:#2b2b2d;color:#B5B5B8;border: 0;font-size: 16px;" class="modal-content">
+            <div class="modal-body">
+                <div class="input-group">
+                    <input id="modal_pass_input" style="background-color:transparent;color:#B5B5B8;" class="form-control" type="text" placeholder="" v-model="pass">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" v-on="click:openLockedDiary"><i  class="fa fa-key fa-fw"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
