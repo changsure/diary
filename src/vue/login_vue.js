@@ -18,37 +18,67 @@ encryptUtil = require('./../util/encrypt_util');
 LoginVue = Vue.extend({
   template: require('../template/login.html'),
   ready: function() {
-    return $("#input_password").keydown((function(_this) {
-      return function(e) {
-        var key;
-        key = e.which;
-        if (key === 13) {
-          return _this.signIn();
-        }
-      };
-    })(this));
+    return this.bindInit();
   },
   methods: {
+    bindInit: function() {
+      return $("#form_password").keydown((function(_this) {
+        return function(e) {
+          if (e.which === 13 || e.keyCode === 13) {
+            return _this.signIn();
+          }
+        };
+      })(this));
+    },
     signIn: function() {
       var user;
+      if (!this.valid()) {
+        return;
+      }
       $("#icon_doing").removeClass("hidden");
       user = {
         email: this.$data.email,
         accountName: this.$data.email,
         displayName: this.$data.email,
         password: encryptUtil.sha1Hash(this.$data.password),
-        remember: true
+        rememberMe: true
       };
       return exchangeService.loginAccount(user, function(err, endToken) {
         $("#icon_doing").addClass("hidden");
         if ((err != null)) {
-          return alert(err.errorMessage);
+          if (err.errCode === 'user.accountOrPasswordNotRight') {
+            $("#form_email").addClass("has-error");
+            return $("#form_password").addClass("has-error");
+          } else {
+            return alert(err.errorMessage);
+          }
         } else {
           return exchangeService.fetchOceanContext(endToken, function() {
             return window.location = config.siteAddress + '/#/main';
           });
         }
       });
+    },
+    valid: function() {
+      var emailReg, isValid;
+      isValid = true;
+      emailReg = /\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+      if ((this.$data.email == null) || this.$data.email === '') {
+        $("#form_email").addClass("has-error");
+        isValid = false;
+      } else if (!emailReg.test(this.$data.email)) {
+        $("#form_email").addClass("has-error");
+        isValid = false;
+      }
+      if (this.$data.password === '') {
+        $("#form_password").addClass("has-error");
+        isValid = false;
+      }
+      return isValid;
+    },
+    removeError: function() {
+      $("#form_email").removeClass("has-error");
+      return $("#form_password").removeClass("has-error");
     }
   }
 });

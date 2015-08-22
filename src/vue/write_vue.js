@@ -18,56 +18,60 @@ dateFormat = require('dateformat');
 WriteVue = Vue.extend({
   template: require('../template/write.html'),
   ready: function() {
-    $("#diary_content textarea").focus();
-    $('#lock_modal').on('shown.bs.modal', function() {
-      return $('#modal_pass_input').focus();
-    });
-    $("#modal_pass_input").keydown((function(_this) {
-      return function(e) {
-        if (e.which === 13 || e.keyCode === 13) {
-          if ($("#do_open_locked_diary:visible").size() > 0) {
-            return _this.openLockedDiary();
-          }
-        }
-      };
-    })(this));
-    $("#diary_content").keydown((function(_this) {
-      return function(e) {
-        if ((e.ctrlKey || e.metaKey) && (e.which === 83 || e.keyCode === 83)) {
-          _this.save();
-          e.preventDefault();
-          return false;
-        }
-      };
-    })(this));
-    if ((this.$data.passCheck != null) && this.$data.passCheck !== '') {
-      $("#diary_content").addClass('hidden');
-      $("#diary_content_locked").removeClass('hidden');
-      $("#icon_locked").addClass('hidden');
-      $("#icon_openlock").removeClass('hidden');
-      $("#icon_unlocked").addClass('hidden');
-      $("#icon_do_save").addClass('hidden');
-      $("#icon_do_save_disable").removeClass('hidden');
-      $("#do_lock_diary").addClass('hidden');
-      $("#do_open_locked_diary").removeClass('hidden');
-    } else {
-      this.$data.content = _.unescape(this.$data.content);
-      $("#diary_content").removeClass('hidden');
-      $("#diary_content_locked").addClass('hidden');
-      $("#icon_locked").addClass('hidden');
-      $("#icon_openlock").addClass('hidden');
-      $("#icon_unlocked").removeClass('hidden');
-      $("#icon_do_save").removeClass('hidden');
-      $("#icon_do_save_disable").addClass('hidden');
-      $("#do_lock_diary").removeClass('hidden');
-      $("#do_open_locked_diary").addClass('hidden');
-    }
-    window.setInterval(this.save, 60 * 1000);
-    if ((this.$data.passCheck != null) && this.$data.passCheck !== '') {
-      return $('#lock_modal').modal('show');
-    }
+    this.bindInit();
+    this.init();
+    return window.setInterval(this.save, 60 * 1000);
   },
   methods: {
+    bindInit: function() {
+      $('#lock_modal').on('shown.bs.modal', function() {
+        return $('#modal_pass_input').focus();
+      });
+      $("#modal_pass_input").keydown((function(_this) {
+        return function(e) {
+          if (e.which === 13 || e.keyCode === 13) {
+            if ($("#do_open_locked_diary:visible").size() > 0) {
+              return _this.openLockedDiary();
+            }
+          }
+        };
+      })(this));
+      return $("#diary_content").keydown((function(_this) {
+        return function(e) {
+          if ((e.ctrlKey || e.metaKey) && (e.which === 83 || e.keyCode === 83)) {
+            _this.save();
+            e.preventDefault();
+            return false;
+          }
+        };
+      })(this));
+    },
+    init: function() {
+      if ((this.$data.passCheck != null) && this.$data.passCheck !== '') {
+        $("#diary_content").addClass('hidden');
+        $("#diary_content_locked").removeClass('hidden');
+        $("#icon_locked").addClass('hidden');
+        $("#icon_openlock").removeClass('hidden');
+        $("#icon_unlocked").addClass('hidden');
+        $("#icon_do_save").addClass('hidden');
+        $("#icon_do_save_disable").removeClass('hidden');
+        $("#do_lock_diary").addClass('hidden');
+        $("#do_open_locked_diary").removeClass('hidden');
+        return $('#lock_modal').modal('show');
+      } else {
+        $("#diary_content").removeClass('hidden');
+        $("#diary_content_locked").addClass('hidden');
+        $("#icon_locked").addClass('hidden');
+        $("#icon_openlock").addClass('hidden');
+        $("#icon_unlocked").removeClass('hidden');
+        $("#icon_do_save").removeClass('hidden');
+        $("#icon_do_save_disable").addClass('hidden');
+        $("#do_lock_diary").removeClass('hidden');
+        $("#do_open_locked_diary").addClass('hidden');
+        this.$data.content = _.unescape(this.$data.content);
+        return $("#diary_content textarea").focus();
+      }
+    },
     save: function() {
       var diary;
       if ((this.$data.content == null) || this.$data.content === '' || this.$data.content === this.$data.savedContent) {
@@ -118,6 +122,7 @@ WriteVue = Vue.extend({
       $("#icon_locked").removeClass('hidden');
       $("#icon_unlocked").addClass('hidden');
       $("#diary_content textarea").focus();
+      this.$data.savedContent = '';
       return this.save();
     },
     openLockedDiary: function() {

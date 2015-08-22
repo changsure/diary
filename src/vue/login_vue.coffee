@@ -11,33 +11,60 @@ LoginVue = Vue.extend({
   template: require('../template/login.html')
 
   ready:()->
-    # bind enter to pass
-    $("#input_password").keydown((e)=>
-      key = e.which
-      if(key == 13)
-        this.signIn()
-    )
+    this.bindInit()
 
   methods:
+    bindInit:()->
+      # bind enter to pass
+      $("#form_password").keydown((e)=>
+        if(e.which == 13 || e.keyCode == 13)
+          this.signIn()
+      )
+
     signIn:()->
+      if(!this.valid())
+        return
       $("#icon_doing").removeClass("hidden")
       user =
         email: this.$data.email
         accountName:this.$data.email
         displayName:this.$data.email
         password: encryptUtil.sha1Hash(this.$data.password)
-        remember: true
+        rememberMe: true
 
       exchangeService.loginAccount(user,(err,endToken)->
         $("#icon_doing").addClass("hidden")
         if(err?)
-          alert(err.errorMessage)
+          if(err.errCode == 'user.accountOrPasswordNotRight')
+            $("#form_email").addClass("has-error")
+            $("#form_password").addClass("has-error")
+          else
+            alert(err.errorMessage)
         else
           exchangeService.fetchOceanContext(endToken,()->
             window.location = config.siteAddress + '/#/main'
           )
       )
 
+    valid:()->
+      isValid = true
+
+      emailReg = ///\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$///
+      if(!this.$data.email? || this.$data.email == '')
+        $("#form_email").addClass("has-error")
+        isValid = false
+      else if(!emailReg.test(this.$data.email))
+        $("#form_email").addClass("has-error")
+        isValid = false
+
+      if(this.$data.password=='')
+        $("#form_password").addClass("has-error")
+        isValid = false
+
+      return isValid
+    removeError:()->
+      $("#form_email").removeClass("has-error")
+      $("#form_password").removeClass("has-error")
 })
 
 module.exports = LoginVue

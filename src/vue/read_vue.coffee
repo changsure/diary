@@ -10,27 +10,40 @@ config = require('./../config')
 WriteVue = Vue.extend({
   template: require('../template/read.html')
   ready:()->
-    if(!this.$data.passCheck? || this.$data.passCheck == '')
-      $("#diary_content_html").html(this.$data.content?.replace(/\n/g,'<br>'))
+    this.bindInit()
     this.initDiary()
+    $("#icon_next").addClass("hidden")
+
     this.queryArroundMonthDiary(new Date(),()=>
       this.bindDatePicker()
     )
 
   methods:
-    openLockedDiary: ()->
-      if(this.$data.passCheck != encryptUtil.sha1Hash(this.$data.pass))
-        alert('Not Right')
-      else
-        this.$data.content = encryptUtil.diaryDecrypt(this.$data.content, this.$data.pass)
-        $('#lock_modal').modal('hide')
+    bindInit:()->
+      $("#modal_pass_input").keydown((e)=>
+        key = e.which
+        if(key == 13)
+          this.openLockedDiary()
+      )
 
+      $('#lock_modal').on('shown.bs.modal', ()->
+        $('#modal_pass_input').focus()
+      )
+
+    initDiary:()->
+      if(this.$data.passCheck? && this.$data.passCheck != '')
+        $("#diary_content").addClass('hidden')
+        $("#diary_content_locked").removeClass('hidden')
+        $("#icon_openlock").removeClass('hidden')
+        $("#icon_locked").removeClass('hidden')
+
+        $('#lock_modal').modal('show')
+
+      else
         $("#diary_content").removeClass('hidden')
         $("#diary_content_locked").addClass('hidden')
-
-        $("#do_open_locked_diary").addClass('hidden')
         $("#icon_openlock").addClass('hidden')
-        $("#icon_locked").removeClass('hidden')
+        $("#icon_locked").addClass('hidden')
 
         $("#diary_content_html").html(this.$data.content?.replace(/\n/g,'<br>'))
 
@@ -53,32 +66,23 @@ WriteVue = Vue.extend({
         this.queryArroundMonthDiary(e.date)
       )
 
-    initDiary:()->
-      $("#modal_pass_input").keydown((e)=>
-        key = e.which
-        if(key == 13)
-          this.openLockedDiary()
-      )
-
-      $('#lock_modal').on('shown.bs.modal', ()->
-        $('#modal_pass_input').focus()
-      )
-
-      if(this.$data.passCheck? && this.$data.passCheck != '')
-        $("#diary_content").addClass('hidden')
-        $("#diary_content_locked").removeClass('hidden')
-        $("#icon_openlock").removeClass('hidden')
-        $("#icon_locked").removeClass('hidden')
-
-        $('#lock_modal').modal('show')
-
+    openLockedDiary: ()->
+      if(this.$data.passCheck != encryptUtil.sha1Hash(this.$data.pass))
+        alert('Not Right')
       else
+        $('#lock_modal').modal('hide')
         $("#diary_content").removeClass('hidden')
         $("#diary_content_locked").addClass('hidden')
+        $("#do_open_locked_diary").addClass('hidden')
         $("#icon_openlock").addClass('hidden')
-        $("#icon_locked").addClass('hidden')
+        $("#icon_locked").removeClass('hidden')
+
+        this.$data.content = encryptUtil.diaryDecrypt(this.$data.content, this.$data.pass)
+        $("#diary_content_html").html(this.$data.content?.replace(/\n/g,'<br>'))
 
     selectDateDiary:(date)->
+      $("#icon_pre").removeClass("hidden")
+      $("#icon_next").removeClass("hidden")
       criteria =
         date:dateFormat(date, 'yyyy-mm-dd')
       exchangeService.queryDiary(criteria,null,null,(e,records)=>
@@ -106,6 +110,47 @@ WriteVue = Vue.extend({
         if(callback?)
           callback()
       )
+
+    preDiary:()->
+      $("#icon_next").removeClass("hidden")
+      criteria =
+        createTime:
+          $lt:this.$data.createTime
+      rowDes =
+        limit: 1
+        sort:
+          createTime:-1
+
+      exchangeService.queryDiary(criteria,null,rowDes,(err,records)=>
+        if(e?)
+          alert(e.errorMessage)
+        else if(records?&&records[0]?)
+          this.$data = records[0]
+          this.initDiary()
+        else if(records?.length==0)
+          $("#icon_pre").addClass("hidden")
+      )
+
+    nextDiary:()->
+      $("#icon_pre").removeClass("hidden")
+      criteria =
+        createTime:
+          $gt:this.$data.createTime
+      rowDes =
+        limit: 1
+        sort:
+          createTime:1
+
+      exchangeService.queryDiary(criteria,null,rowDes,(err,records)=>
+        if(e?)
+          alert(e.errorMessage)
+        else if(records?&&records[0]?)
+          this.$data = records[0]
+          this.initDiary()
+        else if(records?.length==0)
+          $("#icon_next").addClass("hidden")
+      )
+
 
 })
 
