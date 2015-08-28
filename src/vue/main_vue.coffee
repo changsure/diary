@@ -11,7 +11,12 @@ MainVue = Vue.extend({
   beforeCompile:()->
 
   ready:()->
-
+    $("#main_nav").height(window.innerHeight - 200)
+    $("#main_nav").width(window.innerWidth - 55)
+    $(window).on('resize',()->
+      $("#main_nav").height(window.innerHeight - 200)
+      $("#main_nav").width(window.innerWidth - 55)
+    )
   methods:
 
     logout:()->

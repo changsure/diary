@@ -17,7 +17,14 @@ dateFormat = require('dateformat');
 
 WriteVue = Vue.extend({
   template: require('../template/write.html'),
+  beforeCompile: function() {},
   ready: function() {
+    $("#diary_content textarea").height(window.innerHeight - 150);
+    $("#diary_content textarea").width(window.innerWidth - 55);
+    $(window).on('resize', function() {
+      $("#diary_content textarea").height(window.innerHeight - 150);
+      return $("#diary_content textarea").width(window.innerWidth - 55);
+    });
     this.bindInit();
     this.init();
     return window.setInterval(this.save, 60 * 1000);

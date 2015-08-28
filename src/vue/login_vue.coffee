@@ -11,6 +11,11 @@ LoginVue = Vue.extend({
   template: require('../template/login.html')
 
   ready:()->
+    $("#login_div").css('padding-top',window.innerHeight*0.3)
+    $(window).on('resize',()->
+      $("#login_div").css('padding-top',window.innerHeight*0.3)
+    )
+
     this.bindInit()
 
   methods:

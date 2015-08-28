@@ -7,13 +7,14 @@
             <div class="col-xs-6" style="padding-top: 22px;text-align: right">
                 <a href="#/main"><i class="fa fa-reply fa-2x" style="color: #fcfcff;margin-right: 10px;"></i></a>
                 <i id="icon_openlock" class="fa fa-key fa-2x hidden" style="color: #fcfcff;cursor: pointer; cursor: hand;" data-toggle="modal" data-target="#lock_modal"></i>
-                <i id="icon_unlocked" class="fa fa-lock fa-2x" style="color: #5b5b5d;cursor: pointer; cursor: hand;" data-toggle="modal" data-target="#lock_modal"></i>
+                <i id="icon_unlocked" class="fa fa-lock fa-2x" style="color: #5b5b5d;margin-right: 10px;cursor: pointer; cursor: hand;" data-toggle="modal" data-target="#lock_modal"></i>
+                <a target="_blank" href="http://music.lonetime.com"><i class="fa fa-music fa-2x" style="color: #fcfcff;"></i></a>
             </div>
         </div>
     </header>
     <main style="margin-top:10px;">
         <div id="diary_content" class="container-fluid">
-            <textarea autofocus="true" class="form-control" rows="24" style="background-color:transparent;color:#B5B5B8;border: 0;font-size: 16px;" v-model="content"></textarea>
+            <textarea autofocus="true" class="form-control" style="background-color:transparent;color:#B5B5B8;border: 0;font-size: 16px;" v-model="content"></textarea>
         </div>
         <div id="diary_content_locked" class="container-fluid text-center hidden">
             <i class="fa fa-lock fa-5x" style="margin-top: 200px;margin-bottom: 300px;"></i>

@@ -16,7 +16,14 @@ config = require('./../config');
 MainVue = Vue.extend({
   template: require('../template/main.html'),
   beforeCompile: function() {},
-  ready: function() {},
+  ready: function() {
+    $("#main_nav").height(window.innerHeight - 200);
+    $("#main_nav").width(window.innerWidth - 55);
+    return $(window).on('resize', function() {
+      $("#main_nav").height(window.innerHeight - 200);
+      return $("#main_nav").width(window.innerWidth - 55);
+    });
+  },
   methods: {
     logout: function() {
       localStorage.removeItem('oceanContext');

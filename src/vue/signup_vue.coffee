@@ -11,7 +11,10 @@ SignUpVue = Vue.extend({
   template: require('../template/signup.html')
 
   ready:()->
-
+    $("#signup_div").css('padding-top',window.innerHeight*0.3)
+    $(window).on('resize',()->
+      $("#signup_div").css('padding-top',window.innerHeight*0.3)
+    )
 
   methods:
     removeError:()->

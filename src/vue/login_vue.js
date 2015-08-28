@@ -18,6 +18,10 @@ encryptUtil = require('./../util/encrypt_util');
 LoginVue = Vue.extend({
   template: require('../template/login.html'),
   ready: function() {
+    $("#login_div").css('padding-top', window.innerHeight * 0.3);
+    $(window).on('resize', function() {
+      return $("#login_div").css('padding-top', window.innerHeight * 0.3);
+    });
     return this.bindInit();
   },
   methods: {

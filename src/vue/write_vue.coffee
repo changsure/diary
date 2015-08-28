@@ -8,7 +8,17 @@ dateFormat = require('dateformat')
 
 WriteVue = Vue.extend(
   template: require('../template/write.html')
+  beforeCompile:()->
+
   ready: ()->
+    $("#diary_content textarea").height(window.innerHeight - 150)
+    $("#diary_content textarea").width(window.innerWidth - 55)
+    $(window).on('resize',()->
+#      $("#diary_content textarea").css()
+      $("#diary_content textarea").height(window.innerHeight - 150)
+      $("#diary_content textarea").width(window.innerWidth - 55)
+    )
+
     this.bindInit()
     this.init()
 

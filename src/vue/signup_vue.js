@@ -17,7 +17,12 @@ encryptUtil = require('./../util/encrypt_util');
 
 SignUpVue = Vue.extend({
   template: require('../template/signup.html'),
-  ready: function() {},
+  ready: function() {
+    $("#signup_div").css('padding-top', window.innerHeight * 0.3);
+    return $(window).on('resize', function() {
+      return $("#signup_div").css('padding-top', window.innerHeight * 0.3);
+    });
+  },
   methods: {
     removeError: function() {
       $("#form_email").removeClass("has-error");
