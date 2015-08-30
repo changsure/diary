@@ -47,6 +47,14 @@ WriteVue = Vue.extend({
 
         $("#diary_content_html").html(this.$data.content?.replace(/\n/g,'<br>'))
 
+
+      $("#icon_pre").removeClass("hidden")
+      $("#icon_next").removeClass("hidden")
+      if(this.$data.date == window.earliestDiaryDate)
+        $("#icon_pre").addClass("hidden")
+      if(this.$data.date == window.recentDiaryDate)
+        $("#icon_next").addClass("hidden")
+
     bindDatePicker:()->
       $('.fa-calendar').datepicker(
         autoclose: true,
@@ -81,8 +89,6 @@ WriteVue = Vue.extend({
         $("#diary_content_html").html(this.$data.content?.replace(/\n/g,'<br>'))
 
     selectDateDiary:(date)->
-      $("#icon_pre").removeClass("hidden")
-      $("#icon_next").removeClass("hidden")
       criteria =
         date:dateFormat(date, 'yyyy-mm-dd')
       exchangeService.queryDiary(criteria,null,null,(e,records)=>
@@ -112,7 +118,7 @@ WriteVue = Vue.extend({
       )
 
     preDiary:()->
-      $("#icon_next").removeClass("hidden")
+
       criteria =
         createTime:
           $lt:this.$data.createTime
@@ -132,7 +138,6 @@ WriteVue = Vue.extend({
       )
 
     nextDiary:()->
-      $("#icon_pre").removeClass("hidden")
       criteria =
         createTime:
           $gt:this.$data.createTime

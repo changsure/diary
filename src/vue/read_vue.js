@@ -49,13 +49,21 @@ WriteVue = Vue.extend({
         $("#diary_content_locked").removeClass('hidden');
         $("#icon_openlock").removeClass('hidden');
         $("#icon_locked").removeClass('hidden');
-        return $('#lock_modal').modal('show');
+        $('#lock_modal').modal('show');
       } else {
         $("#diary_content").removeClass('hidden');
         $("#diary_content_locked").addClass('hidden');
         $("#icon_openlock").addClass('hidden');
         $("#icon_locked").addClass('hidden');
-        return $("#diary_content_html").html((ref = this.$data.content) != null ? ref.replace(/\n/g, '<br>') : void 0);
+        $("#diary_content_html").html((ref = this.$data.content) != null ? ref.replace(/\n/g, '<br>') : void 0);
+      }
+      $("#icon_pre").removeClass("hidden");
+      $("#icon_next").removeClass("hidden");
+      if (this.$data.date === window.earliestDiaryDate) {
+        $("#icon_pre").addClass("hidden");
+      }
+      if (this.$data.date === window.recentDiaryDate) {
+        return $("#icon_next").addClass("hidden");
       }
     },
     bindDatePicker: function() {
@@ -102,8 +110,6 @@ WriteVue = Vue.extend({
     },
     selectDateDiary: function(date) {
       var criteria;
-      $("#icon_pre").removeClass("hidden");
-      $("#icon_next").removeClass("hidden");
       criteria = {
         date: dateFormat(date, 'yyyy-mm-dd')
       };
@@ -143,7 +149,6 @@ WriteVue = Vue.extend({
     },
     preDiary: function() {
       var criteria, rowDes;
-      $("#icon_next").removeClass("hidden");
       criteria = {
         createTime: {
           $lt: this.$data.createTime
@@ -170,7 +175,6 @@ WriteVue = Vue.extend({
     },
     nextDiary: function() {
       var criteria, rowDes;
-      $("#icon_pre").removeClass("hidden");
       criteria = {
         createTime: {
           $gt: this.$data.createTime
