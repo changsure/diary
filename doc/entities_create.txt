@@ -1,5 +1,9 @@
-blog
+Data Persistent Service Entity
+
+1. diary
+
 {
-    title:{type:String},
-    content:{type:String}
+date:{type:String},
+passCheck:{type:String},
+content:{type:String}
 }
