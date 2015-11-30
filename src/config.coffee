@@ -9,6 +9,10 @@ config.apiResources =
     return window.oceanContext.backServices.user.api + '/login'
   userUpdate:()->
     return window.oceanContext.backServices.user.api + '/update'
+  forgetPassword:()->
+    return window.oceanContext.backServices.user.api + '/forget_password'
+  resetPassword:()->
+    return window.oceanContext.backServices.user.api + '/reset_password'
   getAnonymousOceanContext:()->
     return 'https://api.oceanclouds.com/v1.0/public/ocean_context/' + config.appKey
   getEndUserOceanContext:()->

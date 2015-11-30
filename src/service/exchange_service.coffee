@@ -32,6 +32,38 @@ loginAccount = (user, callback)->
       callback(null, response.entity.accessToken)
   )
 
+forgetPassword = (user, callback)->
+  $.ajax({
+    type: "POST",
+    url: config.apiResources.forgetPassword()
+    headers: {
+      "Ocean-Auth":window.oceanContext.backServices.user.oceanAuthHeader
+    }
+    data: user
+  }).done((response)->
+    if(response.err?)
+      callback(response.err)
+    else
+      callback()
+  )
+
+resetPassword = (resetToken,newPassword, callback)->
+  $.ajax({
+    type: "PUT",
+    url: config.apiResources.resetPassword()
+    headers: {
+      "Ocean-Auth":window.oceanContext.backServices.user.oceanAuthHeader
+    }
+    data:
+      resetToken:resetToken
+      newPassword:newPassword
+  }).done((response)->
+    if(response.err?)
+      callback(response.err)
+    else
+      callback()
+  )
+
 updateAccount = (user,callback)->
   user.account = window.oceanContext.userInfo.email
   $.ajax({
@@ -188,6 +220,9 @@ oceanService = {
   registerAccount: registerAccount
   loginAccount: loginAccount
   updateAccount:updateAccount
+  forgetPassword:forgetPassword
+  resetPassword:resetPassword
+
   fetchOceanContext: fetchOceanContext
   removeOceanContext:removeOceanContext
 

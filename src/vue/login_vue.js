@@ -52,7 +52,8 @@ LoginVue = Vue.extend({
         if ((err != null)) {
           if (err.errCode === 'user.accountOrPasswordNotRight') {
             $("#form_email").addClass("has-error");
-            return $("#form_password").addClass("has-error");
+            $("#form_password").addClass("has-error");
+            return $("#forget_div").removeClass("hidden");
           } else {
             return alert(err.errorMessage);
           }
